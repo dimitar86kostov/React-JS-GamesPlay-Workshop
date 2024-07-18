@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import gamesAPI from "../../api/games-api";
-import { useParams } from "react-router-dom";
-
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function Details() {
     const [game, setGame] = useState([]);
     const { gameId } = useParams();
+    // const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
@@ -13,6 +13,21 @@ export default function Details() {
             setGame(game);
         })();
     }, []);
+
+    // async function deleteHandler(gameId) {
+// console.log('delete');
+    // console.log(`Are you sure u want to DELETE ${game.title} ?`);
+    // confirm(`Are you sure u want to DELETE ${game.title} ?`)
+    //     ? await gamesAPI.deleteGame(gameId)
+    //     : navigate(`/catalog/${gameId}/details`);
+    // if (confirm(`Are you sure u want to DELETE ${game.title} ?`)) {
+    //     await gamesAPI.deleteGame(gameId)
+    //     navigate('/');
+    // } else {
+    //     navigate(`/catalog/${gameId}/details`)
+    // }
+
+    // }
 
     return (
         <section id="game-details">
@@ -47,9 +62,12 @@ export default function Details() {
                     <a href="#" className="button">
                         Edit
                     </a>
-                    <a href="#" className="button">
+                    <Link to={`/catalog/${gameId}/delete`}
+                        className="button"
+                        // onSubmit={() => {deleteHandler()}}
+                    >
                         Delete
-                    </a>
+                    </Link>
                 </div>
             </div>
             {/* Bonus */}

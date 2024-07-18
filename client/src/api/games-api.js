@@ -13,9 +13,15 @@ export const getAll = async () => {
 
 export const getOne = (gameId) => request.get(`${BASE_URL}/${gameId}`);
 
+export const createGame = (createdGame) => request.post(BASE_URL, createdGame);
+
+export const deleteGame = (gameId) => request.del(BASE_URL, gameId)
+
 const gamesAPI = {
     getAll,
-    getOne
+    getOne,
+    createGame,
+    deleteGame
 };
 
 export default gamesAPI;
