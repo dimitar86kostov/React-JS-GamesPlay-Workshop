@@ -9,7 +9,6 @@ export default function Catalog() {
         (async () => {
             try {
                 const response = await getAll();
-                // const games = await response.json();
                 console.log(response);
                 setGames(response);
             } catch (err) {
