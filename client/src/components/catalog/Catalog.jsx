@@ -1,4 +1,23 @@
+import { useEffect, useState } from 'react';
+import { getAll } from '../../api/games-api';
+// import { getAll } from '../../api/games-api';
+
 export default function Catalog() {
+    const [games, setGames] = useState([]);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await getAll();
+                // const games = await response.json();
+                console.log(response);
+                setGames(response);
+            } catch (err) {
+                console.error(err);
+            }
+        })();
+    }, []);
+
     return (
         <section id="catalog-page">
             <h1>All Games</h1>
