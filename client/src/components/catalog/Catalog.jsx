@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAll } from '../../api/games-api';
+import gamesAPI from '../../api/games-api';
 import GameItem from './gameItem/GameItem';
 
 export default function Catalog() {
@@ -9,8 +9,8 @@ export default function Catalog() {
     useEffect(() => {
         (async () => {
             try {
-                const response = await getAll();
-                setGames(Object.values(response));
+                const result = await gamesAPI.getAll();
+                setGames(result);
             } catch (err) {
                 console.error(err);
             }
