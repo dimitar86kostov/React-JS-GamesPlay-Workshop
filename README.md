@@ -11,8 +11,8 @@ SoftUni React Course Project
 - [x] Separate html into components
 ## 2. React Router
 - [x] Install react-router-dom
-- [] Setup react-router-dom
-- [] Add routes in App.js
+- [x] Setup react-router-dom
+- [x] Add routes in App.js
 - [] Add links in the navigation
 ## 3. Create Service Layer
 - [] Service layer architecture disccusion
