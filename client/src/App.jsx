@@ -1,7 +1,26 @@
+import Catalog from "./components/catalog/Catalog"
+import CreateGame from "./components/createGame/CreateGame"
+import Details from "./components/details/Details"
+import EditGame from "./components/editGame/EditGame"
+import Header from "./components/header/Header"
+import Home from "./components/home/Home"
+import Login from "./components/login/Login"
+import Register from "./components/register/Register"
+
 function App() {
-   return (
+  return (
     <>
-      <h1>Games Play</h1>
+      <Header />
+      <main id="main-content">
+
+        <Home />
+        <Catalog />
+        <CreateGame />
+        <EditGame />
+        <Details />
+        <Login />
+        <Register />
+      </main>
     </>
   )
 }
