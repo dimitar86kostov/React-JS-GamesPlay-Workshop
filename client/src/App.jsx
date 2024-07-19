@@ -1,5 +1,6 @@
 import Catalog from "./components/catalog/Catalog"
 import CreateGame from "./components/createGame/CreateGame"
+// import DeleteGame from "./components/details/delete/DeleteGame"
 import Details from "./components/details/Details"
 import EditGame from "./components/editGame/EditGame"
 import Header from "./components/header/Header"
@@ -21,6 +22,7 @@ function App() {
           <Route path="/create" element={<CreateGame />} />
           <Route path="/edit" element={<EditGame />} />
           <Route path="/catalog/:gameId/details" element={<Details />} />
+          {/* <Route path="/:gameId/delete" element={<DeleteGame />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 

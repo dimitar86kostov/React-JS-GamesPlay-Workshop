@@ -1,33 +1,50 @@
 import { useEffect, useState } from "react";
 import gamesAPI from "../../api/games-api";
+import * as commentsAPI from '../../api/comments-api'
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function Details() {
-    const [game, setGame] = useState([]);
+    const [game, setGame] = useState({});
+    const [comment, setComment] = useState('');
+    const [username, setUsername] = useState('');
+
     const { gameId } = useParams();
     // const navigate = useNavigate();
 
+    async function getCurrentGame(gameId) {
+        const game = await gamesAPI.getOne(gameId);
+        setGame(game);
+    }
+
     useEffect(() => {
-        (async () => {
-            const game = await gamesAPI.getOne(gameId);
-            setGame(game);
-        })();
+        getCurrentGame(gameId);
     }, []);
 
     // async function deleteHandler(gameId) {
-// console.log('delete');
-    // console.log(`Are you sure u want to DELETE ${game.title} ?`);
     // confirm(`Are you sure u want to DELETE ${game.title} ?`)
     //     ? await gamesAPI.deleteGame(gameId)
     //     : navigate(`/catalog/${gameId}/details`);
-    // if (confirm(`Are you sure u want to DELETE ${game.title} ?`)) {
-    //     await gamesAPI.deleteGame(gameId)
-    //     navigate('/');
-    // } else {
-    //     navigate(`/catalog/${gameId}/details`)
     // }
 
-    // }
+    async function commentSubmitHandler(e) {
+        e.preventDefault();
+
+        const newComment = await commentsAPI.create(gameId, username, comment);
+        getCurrentGame(gameId);
+
+        // Advance technique without request to the server
+        
+        // setGame(prevState => ({
+        //     ...prevState,
+        //     comments: {
+        //         ...prevState.comments,
+        //         [newComment._id]: newComment,
+        //     }
+        // }))
+
+        setUsername('');
+        setComment('');
+    }
 
     return (
         <section id="game-details">
@@ -47,38 +64,46 @@ export default function Details() {
                     <h2>Comments:</h2>
                     <ul>
                         {/* list all comments for current game (If any) */}
-                        <li className="comment">
-                            <p>Content: I rate this one quite highly.</p>
-                        </li>
-                        <li className="comment">
-                            <p>Content: The best game.</p>
-                        </li>
+                        {game.comments
+                            ?
+                            Object.values(game.comments).map(comment =>
+                                <li className="comment">
+                                    <p>{comment.username}: {comment.comment}</p>
+                                </li>)
+                            : <p className="no-comment">No comments.</p>
+                        }
                     </ul>
-                    {/* Display paragraph: If there are no games in the database */}
-                    <p className="no-comment">No comments.</p>
+
                 </div>
                 {/* Edit/Delete buttons ( Only for creator of this game )  */}
-                <div className="buttons">
+                {/* <div className="buttons">
                     <a href="#" className="button">
                         Edit
                     </a>
                     <Link to={`/catalog/${gameId}/delete`}
                         className="button"
-                        // onSubmit={() => {deleteHandler()}}
                     >
                         Delete
                     </Link>
-                </div>
+                </div> */}
             </div>
             {/* Bonus */}
             {/* Add Comment ( Only for logged-in users, which is not creators of the current game ) */}
             <article className="create-comment">
                 <label>Add new comment:</label>
-                <form className="form">
+                <form className="form" onSubmit={commentSubmitHandler}>
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Митьо..."
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
                     <textarea
                         name="comment"
                         placeholder="Comment......"
-                        defaultValue={""}
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
                     />
                     <input
                         className="btn submit"
