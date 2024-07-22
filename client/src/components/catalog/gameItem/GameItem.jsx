@@ -1,10 +1,11 @@
-import {Link} from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 export default function GameItem({
     _id,
     title,
     category,
     imageUrl,
+    refetch,
 }) {
     return (
 
@@ -19,7 +20,7 @@ export default function GameItem({
             </div>
         </div>
 
-
+        //  <button onClick={refetch}>refresh</button> 
 
     );
 }

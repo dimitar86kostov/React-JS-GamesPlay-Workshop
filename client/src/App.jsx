@@ -8,6 +8,7 @@ import Home from "./components/home/Home"
 import Login from "./components/login/Login"
 import Register from "./components/register/Register"
 import { Route, Routes } from 'react-router-dom'
+import RefreshContext from "./contexts/RefreshContext"
 
 function App() {
   return (
@@ -15,18 +16,17 @@ function App() {
       <Header />
 
       <main id="main-content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/catalog" element={<Catalog />} />
+            <Route path="/create" element={<CreateGame />} />
+            <Route path="/edit" element={<EditGame />} />
+            <Route path="/catalog/:gameId/details" element={<Details />} />
+            {/* <Route path="/:gameId/delete" element={<DeleteGame />} /> */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/catalog" element={<Catalog />} />
-          <Route path="/create" element={<CreateGame />} />
-          <Route path="/edit" element={<EditGame />} />
-          <Route path="/catalog/:gameId/details" element={<Details />} />
-          {/* <Route path="/:gameId/delete" element={<DeleteGame />} /> */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-
-        </Routes>
+          </Routes>
       </main>
     </div>
   )

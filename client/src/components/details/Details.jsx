@@ -2,29 +2,27 @@ import { useEffect, useState } from "react";
 import gamesAPI from "../../api/games-api";
 import * as commentsAPI from '../../api/comments-api'
 import { Link, useNavigate, useParams } from "react-router-dom";
+import useFetch from "../../hooks/useFetch";
 
 export default function Details() {
-    const [game, setGame] = useState({});
+    // const [game, setGame] = useState({});
     const [comment, setComment] = useState('');
     const [username, setUsername] = useState('');
 
     const { gameId } = useParams();
+
+    const { data: game, isFetching } = useFetch(`http://localhost:3030/jsonstore/games/${gameId}`, {});
+    console.log(game);
     // const navigate = useNavigate();
 
-    async function getCurrentGame(gameId) {
-        const game = await gamesAPI.getOne(gameId);
-        setGame(game);
-    }
-
-    useEffect(() => {
-        getCurrentGame(gameId);
-    }, []);
-
-    // async function deleteHandler(gameId) {
-    // confirm(`Are you sure u want to DELETE ${game.title} ?`)
-    //     ? await gamesAPI.deleteGame(gameId)
-    //     : navigate(`/catalog/${gameId}/details`);
+    // async function getCurrentGame(gameId) {
+    //     const game = await gamesAPI.getOne(gameId);
+    //     setGame(game);
     // }
+
+    // useEffect(() => {
+    //     getCurrentGame(gameId);
+    // }, []);
 
     async function commentSubmitHandler(e) {
         e.preventDefault();
@@ -33,7 +31,7 @@ export default function Details() {
         getCurrentGame(gameId);
 
         // Advance technique without request to the server
-        
+
         // setGame(prevState => ({
         //     ...prevState,
         //     comments: {
@@ -59,6 +57,7 @@ export default function Details() {
                 <p className="text">
                     {game.summary}
                 </p>
+
                 {/* Bonus ( for Guests and Users ) */}
                 <div className="details-comments">
                     <h2>Comments:</h2>

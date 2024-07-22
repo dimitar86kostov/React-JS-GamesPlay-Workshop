@@ -1,30 +1,21 @@
-import { useEffect, useState } from 'react';
-import gamesAPI from '../../api/games-api';
+import useFetch from '../../hooks/useFetch';
+import Spinner from '../spinner/Spinner';
 import GameItem from './gameItem/GameItem';
 
 export default function Catalog() {
-    const [games, setGames] = useState([]);
-    console.log(games);
 
-    useEffect(() => {
-        (async () => {
-            try {
-                const result = await gamesAPI.getAll();
-                setGames(result);
-            } catch (err) {
-                console.error(err);
-            }
-        })();
-    }, []);
+    const { data, isFetching, refetch } = useFetch("http://localhost:3030/jsonstore/games", []);
 
+    const games = Object.values(data)
     return (
         <section id="catalog-page">
             <h1>All Games</h1>
             {/* Display div: with information about every game (if any) */}
 
-            {games.length > 0 ?
-                games.map(game => <GameItem key={game._id} {...game} />)
-                : <h3 className="no-articles">No articles yet</h3>
+            {isFetching
+                ? <Spinner />
+                : games.map(game => <GameItem key={game._id} {...game} refetch={refetch} />)
+                // {/* : <h3 className="no-articles">No articles yet</h3> */}
             }
 
 
