@@ -1,34 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import gamesAPI from "../../api/games-api";
-import * as commentsAPI from '../../api/comments-api'
-import { Link, useNavigate, useParams } from "react-router-dom";
-import useFetch from "../../hooks/useFetch";
+import commentsAPI from '../../api/comments-api'
+import { useParams } from "react-router-dom";
+import { useGetOneGames } from "../../hooks/useGames";
 
 export default function Details() {
-    // const [game, setGame] = useState({});
+    const { gameId } = useParams();
+    const [game, setGame] = useGetOneGames(gameId);
     const [comment, setComment] = useState('');
     const [username, setUsername] = useState('');
 
-    const { gameId } = useParams();
-
-    const { data: game, isFetching } = useFetch(`http://localhost:3030/jsonstore/games/${gameId}`, {});
-    console.log(game);
-    // const navigate = useNavigate();
-
-    // async function getCurrentGame(gameId) {
-    //     const game = await gamesAPI.getOne(gameId);
-    //     setGame(game);
-    // }
-
-    // useEffect(() => {
-    //     getCurrentGame(gameId);
-    // }, []);
 
     async function commentSubmitHandler(e) {
         e.preventDefault();
 
         const newComment = await commentsAPI.create(gameId, username, comment);
-        getCurrentGame(gameId);
 
         // Advance technique without request to the server
 
@@ -39,6 +25,7 @@ export default function Details() {
         //         [newComment._id]: newComment,
         //     }
         // }))
+        gamesAPI.getAll(gameId);
 
         setUsername('');
         setComment('');
@@ -66,7 +53,7 @@ export default function Details() {
                         {game.comments
                             ?
                             Object.values(game.comments).map(comment =>
-                                <li className="comment">
+                                <li className="comment" key={comment.comment}>
                                     <p>{comment.username}: {comment.comment}</p>
                                 </li>)
                             : <p className="no-comment">No comments.</p>

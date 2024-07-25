@@ -5,7 +5,6 @@ export default function GameItem({
     title,
     category,
     imageUrl,
-    refetch,
 }) {
     return (
 

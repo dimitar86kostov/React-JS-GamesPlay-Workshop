@@ -10,6 +10,17 @@ const create = (gameId, username, comment) => {
     return result;
 };
 
-export {
-    create
+const getAll = (gameId) => {
+    const result = request.get(buildURL(gameId));
+
+    const comments = Object.values(response);
+
+    return comments;
+};
+
+const commentsAPI = {
+    create,
+    getAll
 }
+
+export default commentsAPI
