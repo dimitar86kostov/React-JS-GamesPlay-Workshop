@@ -37,17 +37,17 @@ SoftUni React Course Project
 - [x] GameAPI Hooks
 - [ ] Comment Hooks
 ## 7. Authentication
-- [] Auth API
-  - [] Login
+- [x] Auth API
+  - [x] Login
   - [] Register
   - [ ] Logout
 - [] Auth API hook
-  - [] Login
+  - [x] Login
   - [] Register
   - [ ] Logout
-- [] Auth state & contet
-- [] Token management
-- [] Login
+- [x] Auth state & contet
+- [x] Token management
+- [x] Login
 - [] Register
   - [] Add form validation
 - [ ] Logout

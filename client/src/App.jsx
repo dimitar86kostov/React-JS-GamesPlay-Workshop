@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import Catalog from "./components/catalog/Catalog"
 import CreateGame from "./components/createGame/CreateGame"
 // import DeleteGame from "./components/details/delete/DeleteGame"
@@ -8,14 +10,28 @@ import Home from "./components/home/Home"
 import Login from "./components/login/Login"
 import Register from "./components/register/Register"
 import { Route, Routes } from 'react-router-dom'
-import RefreshContext from "./contexts/RefreshContext"
+import AuthContext from "./contexts/AuthContext"
 
 function App() {
-  return (
-    <div id="box">
-      <Header />
+  const [authState, setAuthState] = useState({});
 
-      <main id="main-content">
+  const changeAuthState = (state) => {
+    setAuthState(state)
+  };
+
+  const contextData = {
+    userId: authState._id,
+    email: authState.email,
+    accessToken: authState.accessToken,
+    isAuthenticated: !!authState.email,
+    changeAuthState
+  }
+
+  return (
+    <AuthContext.Provider value={contextData}>
+      <div id="box">
+        <Header />
+        <main id="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/catalog" element={<Catalog />} />
@@ -27,8 +43,9 @@ function App() {
             <Route path="/register" element={<Register />} />
 
           </Routes>
-      </main>
-    </div>
+        </main>
+      </div>
+    </AuthContext.Provider>
   )
 }
 
