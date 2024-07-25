@@ -1,12 +1,11 @@
 import useFetch from '../../hooks/useFetch';
+import { useGetAllGames } from '../../hooks/useGames';
 import Spinner from '../spinner/Spinner';
 import GameItem from './gameItem/GameItem';
 
 export default function Catalog() {
+    const [games, setGames] = useGetAllGames()
 
-    const { data, isFetching, refetch } = useFetch("http://localhost:3030/jsonstore/games", []);
-
-    const games = Object.values(data)
     return (
         <section id="catalog-page">
             <h1>All Games</h1>
