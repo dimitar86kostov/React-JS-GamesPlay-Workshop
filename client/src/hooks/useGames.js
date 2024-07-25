@@ -33,3 +33,10 @@ export function useGetOneGames(gameId) {
         setGame
     ];
 }
+
+export function useCreateGame() {
+
+    const gameCreateHandler = (gameData) => gamesAPI.createGame(gameData);
+
+    return gameCreateHandler;
+}

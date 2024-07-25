@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useLogin } from "../../hooks/useAuth";
 import useForm from "../../hooks/useForm";
+import { useState } from "react";
 
 const initValues = {
     email: '',
@@ -8,6 +9,7 @@ const initValues = {
 };
 
 export default function Login() {
+    const [error, setError] = useState('');
     const login = useLogin();
     const navigate = useNavigate();
 
@@ -18,7 +20,7 @@ export default function Login() {
             navigate('/');
 
         } catch (err) {
-            console.error(err.message);
+            setError(err.message);
         }
     }
 
@@ -47,6 +49,11 @@ export default function Login() {
                         value={values.password}
                         onChange={changeHandler}
                     />
+                    {error && (
+                        <h1 >
+                            <span style={{ color: 'red' }}>{error}</span>
+                        </h1>
+                    )}
                     <input
                         type="submit"
                         className="btn submit"

@@ -2,6 +2,10 @@ async function requester(method, url, data) {
 
     const options = {};
 
+    // if (X-Authorization) {
+        
+    // }
+
     if (method != 'GET') {
         options.method = method;
     }

@@ -18,8 +18,8 @@ export default function Register() {
     const registerHandler = async ({ email, password, rePass }) => {
         if (password !== rePass) {
             return setError('Password missmatch');
-
         }
+
         try {
             await register(email, password)
             navigate('/');
@@ -29,6 +29,7 @@ export default function Register() {
             console.error(err.message);
         }
     }
+    
     const { values, changeHandler, submitHandler } = useForm(initValues, registerHandler)
 
     return (

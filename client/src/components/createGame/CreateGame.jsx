@@ -1,23 +1,32 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import gamesAPI from "../../api/games-api";
+import { useCreateGame } from "../../hooks/useGames";
+import { useState } from "react";
+
+const initValues = {
+    "title": '',
+    "category": '',
+    "maxLevel": '',
+    "imageUrl": '',
+    "summary": '',
+};
 
 export default function CreateGame() {
-    const initValues = {
-        "title": '',
-        "category": '',
-        "maxLevel": '',
-        "imageUrl": '',
-        "summary": '',
-    };
+    const [error, setError] = useState('');
+    const create = useCreateGame();
     const navigate = useNavigate();
 
-    const submitFormHandler = async (values) => {
-        const result = await gamesAPI.createGame(values)
-        navigate(`/catalog/${result._id}/details`)
+    const createHandler = async (values) => {
+        try {
+            const result = await create(values);
+            navigate(`/catalog/${result._id}/details`)
+
+        } catch (err) {
+            setError(err.message)
+        }
     };
 
-    const { values, changeHandler, submitHandler } = useForm(initValues, submitFormHandler)
+    const { values, changeHandler, submitHandler } = useForm(initValues, createHandler)
 
 
     return (
@@ -69,6 +78,11 @@ export default function CreateGame() {
                         onChange={changeHandler}
                         value={values.summary}
                     />
+                    {error && (
+                        <h1 >
+                            <span style={{ color: 'red' }}>{error}</span>
+                        </h1>
+                    )}
                     <input
                         className="btn submit"
                         type="submit"

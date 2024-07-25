@@ -25,6 +25,5 @@ export default function useForm(initValues, submitCallback) {
         submitHandler,
         changeHandler,
         values
-
     }
 }
