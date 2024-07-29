@@ -10,25 +10,12 @@ import Home from "./components/home/Home"
 import Login from "./components/login/Login"
 import Register from "./components/register/Register"
 import { Route, Routes } from 'react-router-dom'
-import AuthContext from "./contexts/AuthContext"
+import { AuthContextProvider } from "./contexts/AuthContext"
 
 function App() {
-  const [authState, setAuthState] = useState({});
-
-  const changeAuthState = (state) => {
-    setAuthState(state)
-  };
-
-  const contextData = {
-    userId: authState._id,
-    email: authState.email,
-    accessToken: authState.accessToken,
-    isAuthenticated: !!authState.email,
-    changeAuthState
-  }
 
   return (
-    <AuthContext.Provider value={contextData}>
+    <AuthContextProvider>
       <div id="box">
         <Header />
         <main id="main-content">
@@ -45,7 +32,7 @@ function App() {
           </Routes>
         </main>
       </div>
-    </AuthContext.Provider>
+    </AuthContextProvider>
   )
 }
 

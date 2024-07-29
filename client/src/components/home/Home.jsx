@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import gamesAPI from "../../api/games-api";
 
 export default function Home() {
-
+    const [error, setError] = useState('');
     const [latest, setLatest] = useState([]);
 
     useEffect(() => {
@@ -12,7 +12,7 @@ export default function Home() {
                 setLatest(games);
 
             } catch (err) {
-                console.error(err);
+                setError(err.message);
             }
         })();
     }, []);
