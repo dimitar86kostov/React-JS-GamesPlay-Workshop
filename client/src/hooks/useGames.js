@@ -12,7 +12,7 @@ export function useGetAllGames() {
                 setGames(result);
             }
         )()
-    });
+    }, []);
 
     return [games, setGames];
 }

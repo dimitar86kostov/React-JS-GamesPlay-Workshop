@@ -6,12 +6,12 @@ async function requester(method, url, data) {
 
     const options = {};
 
-    // if (accessToken) {
-    //     options.headers = {
-    //         ...options.headers,
-    //         'X-Authorization': accessToken
-    //     }
-    // }
+    if (accessToken) {
+        options.headers = {
+            ...options.headers,
+            'X-Authorization': accessToken
+        }
+    }
 
     if (method != 'GET') {
         options.method = method;
@@ -19,7 +19,7 @@ async function requester(method, url, data) {
 
     if (data) {
         options.headers = {
-            // ...options.headers,
+            ...options.headers,
             'Content-type': 'application/json'
         };
 
@@ -27,6 +27,10 @@ async function requester(method, url, data) {
     }
 
     const response = await fetch(url, options);
+    if (response.status === 204) {
+        return;
+    }
+
     const result = await response.json();
 
     if (!response.ok) {
