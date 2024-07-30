@@ -6,10 +6,9 @@ export default function useForm(initValues, submitCallback) {
     async function submitHandler(e) {
         e.preventDefault();
 
-        // await gamesAPI.createGame(values);
-
         submitCallback(values)
-        // navigate('/');
+
+        setValues(initValues);
     };
 
     // Not workink for checkbox
