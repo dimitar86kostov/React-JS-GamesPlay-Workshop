@@ -1,7 +1,15 @@
 import { useContext } from "react";
 import { createContext, useState } from "react";
 
-export const AuthContext = createContext();
+export const AuthContext = createContext({
+  userId: '',
+  username: '',
+  email: '',
+  accessToken: '',
+  isAuthenticated: false,
+  changeAuthState: (authState = {}) => null,
+  logout: () => null,
+});
 
 export function AuthContextProvider(props) {
   const [authState, setAuthState] = useState({});

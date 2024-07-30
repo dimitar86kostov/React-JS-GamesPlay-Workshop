@@ -1,35 +1,24 @@
-import { useState } from "react";
-import gamesAPI from "../../api/games-api";
-import commentsAPI from '../../api/comments-api'
+import { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { useGetOneGames } from "../../hooks/useGames";
+import useForm from "../../hooks/useForm";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useCreateComment, useGetAllComments } from "../../hooks/useComments";
+
+const initValues = {
+    comment: '',
+}
 
 export default function Details() {
     const { gameId } = useParams();
-    const [game, setGame] = useGetOneGames(gameId);
-    const [comment, setComment] = useState('');
-    const [username, setUsername] = useState('');
+    const [game] = useGetOneGames(gameId);
+    const createComment = useCreateComment();
+    const [comments, setComments] = useGetAllComments(gameId);
+    const { isAuthenticated } = useContext(AuthContext);
 
-
-    async function commentSubmitHandler(e) {
-        e.preventDefault();
-
-        const newComment = await commentsAPI.create(gameId, username, comment);
-
-        // Advance technique without request to the server
-
-        // setGame(prevState => ({
-        //     ...prevState,
-        //     comments: {
-        //         ...prevState.comments,
-        //         [newComment._id]: newComment,
-        //     }
-        // }))
-        gamesAPI.getAll(gameId);
-
-        setUsername('');
-        setComment('');
-    }
+    const { changeHandler, submitHandler, values } = useForm(initValues, ({ comment }) => {
+        createComment(gameId, comment)
+    })
 
     return (
         <section id="game-details">
@@ -50,14 +39,12 @@ export default function Details() {
                     <h2>Comments:</h2>
                     <ul>
                         {/* list all comments for current game (If any) */}
-                        {game.comments
-                            ?
-                            Object.values(game.comments).map(comment =>
-                                <li className="comment" key={comment.comment}>
-                                    <p>{comment.username}: {comment.comment}</p>
-                                </li>)
-                            : <p className="no-comment">No comments.</p>
+                        {comments.map(comment =>
+                            <li className="comment" key={comment.comment}>
+                                <p>Username: {comment.text}</p>
+                            </li>)
                         }
+                        {comments.length == 0 && <p className="no-comment">No comments.</p>}
                     </ul>
 
                 </div>
@@ -75,29 +62,34 @@ export default function Details() {
             </div>
             {/* Bonus */}
             {/* Add Comment ( Only for logged-in users, which is not creators of the current game ) */}
-            <article className="create-comment">
-                <label>Add new comment:</label>
-                <form className="form" onSubmit={commentSubmitHandler}>
-                    <input
-                        type="text"
-                        name="username"
-                        placeholder="Митьо..."
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                    <textarea
-                        name="comment"
-                        placeholder="Comment......"
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
-                    />
-                    <input
-                        className="btn submit"
-                        type="submit"
-                        defaultValue="Add Comment"
-                    />
-                </form>
-            </article>
+            {isAuthenticated &&
+                <article className="create-comment">
+                    <label>Add new comment:</label>
+                    <form className="form" onSubmit={submitHandler}>
+
+                        <textarea
+                            name="comment"
+                            placeholder="Comment......"
+                            value={values.comment}
+                            onChange={changeHandler}
+                        />
+                        <input
+                            className="btn submit"
+                            type="submit"
+                            defaultValue="Add Comment"
+                        />
+                    </form>
+                </article>
+            }
         </section>
     );
 }
+// Advance technique without request to the server
+
+// setGame(prevState => ({
+//     ...prevState,
+//     comments: {
+//         ...prevState.comments,
+//         [newComment._id]: newComment,
+//     }
+// }))

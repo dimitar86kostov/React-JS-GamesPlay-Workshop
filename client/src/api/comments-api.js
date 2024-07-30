@@ -1,21 +1,18 @@
 import * as request from '../api/requester'
-const buildURL = (gameId) => `http://localhost:3030/jsonstore/games/${gameId}/comments`;
+const BASE_URL = `http://localhost:3030/data/comments`;
 
-const create = (gameId, username, comment) => {
 
-    const response = request.post(buildURL(gameId), { username, comment });
+const create = (gameId, text) => request.post(BASE_URL, { gameId, text });
 
-    const result = Object.values(response);
-
-    return result;
-};
 
 const getAll = (gameId) => {
-    const result = request.get(buildURL(gameId));
+    const params = new URLSearchParams({
+        where: `gameId="${gameId}"`
+    })
 
-    const comments = Object.values(response);
+    console.log(`${BASE_URL}?${params.toString()}`);
 
-    return comments;
+    return request.get(`${BASE_URL}?${params.toString()}`);
 };
 
 const commentsAPI = {

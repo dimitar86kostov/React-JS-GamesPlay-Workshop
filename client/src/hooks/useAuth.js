@@ -32,7 +32,7 @@ export function useRegister() {
 }
 
 export function useLogout() {
-    const { logout: localLogout } = useAuthContext();
+    const {logout: localLogout} = useAuthContext();
 
     const logoutHandler = async () => {
 
