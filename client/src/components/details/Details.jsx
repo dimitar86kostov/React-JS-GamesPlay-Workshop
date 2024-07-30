@@ -48,8 +48,8 @@ export default function Details() {
                     <ul>
                         {/* list all comments for current game (If any) */}
                         {comments.map(comment =>
-                            <li className="comment" key={comment.comment}>
-                                <p>Username: {comment.text}</p>
+                            <li className="comment" key={comment._id}>
+                                <p>{comment.user.email}: {comment.text}</p>
                             </li>)
                         }
                         {comments.length == 0 && <p className="no-comment">No comments.</p>}
