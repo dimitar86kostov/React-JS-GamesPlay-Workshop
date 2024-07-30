@@ -16,9 +16,17 @@ export default function Details() {
     const [comments, setComments] = useGetAllComments(gameId);
     const { isAuthenticated } = useContext(AuthContext);
 
-    const { changeHandler, submitHandler, values } = useForm(initValues, ({ comment }) => {
-        createComment(gameId, comment)
-    })
+    const commentHandler = async ({ comment }) => {
+       try {
+        const newComment = await createComment(gameId, comment);
+
+        setComments(oldComments => ([...oldComments, newComment]));
+       } catch (err) {
+        console.error(err.message);
+       }
+    };
+
+    const { changeHandler, submitHandler, values } = useForm(initValues, commentHandler);
 
     return (
         <section id="game-details">
